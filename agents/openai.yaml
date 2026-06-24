@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hunter English OS"
+  short_description: "Improve English through reading, output, and review"
+  default_prompt: "Use $hunter-english-os to help me learn English from a text through comprehension, active output, correction, and review."
