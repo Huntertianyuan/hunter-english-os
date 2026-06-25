@@ -56,11 +56,12 @@ Examples:
 
 ## Memory Decision
 
-Save a review candidate when an item is likely to recur, the user explicitly wants it, or it supports active production.
+Save a review candidate when an item is likely to recur, the user explicitly wants it, or it supports active production. Use `capture-workflow.md` to infer candidates from user signals before saving.
 
 Do not confuse comprehension support, session notes, and review items.
 
 - Comprehension support: explanation that helps the user understand the current source locally.
+- Background note: source context such as a person, organization, event, or institution.
 - Session checkpoint: temporary reading continuity, such as what was read and the local gist.
 - Review queue: long-term practice items that can train future ability.
 
@@ -71,6 +72,8 @@ Classify saved items:
 - `reading_obstacle`: a word or phrase that blocked comprehension or was guessed incorrectly.
 - `active_expression`: an expression the user can understand but wants to produce in their own writing or speech.
 - `error_pattern`: a recurring structure, word choice, collocation, or grammar problem from the user's output.
+
+Keep `comprehension_support` and `background_note` out of the review queue unless the user explicitly asks to remember them.
 
 Do not save authorial one-off metaphors, local argument explanations, or comprehension-only notes unless the user asks or they are likely to matter again.
 
@@ -87,6 +90,8 @@ Before saving, apply this gate:
 
 If the answer is no, keep it only in a session checkpoint or leave it out.
 
+Before saving, show review candidates with level and reason, then ask for confirmation. Save only confirmed items.
+
 ## Session Checkpoints
 
 Use session checkpoints for reading continuity, not long-term practice.
@@ -98,6 +103,7 @@ A checkpoint may include:
 - important context for the next paragraph
 - blockers already resolved
 - comprehension support that should not enter review
+- background notes that should not enter review
 - user's retelling or correction highlights
 - review items actually kept
 - next starting point
@@ -141,6 +147,8 @@ Assign a review level before saving:
 - `L4 new-word build`: user has not seen the word before. First build recognition and context, then later move toward production.
 
 Use `User Need`, `Review Strategy`, and `Exit Condition` to keep the review queue from becoming a vocabulary pile.
+
+Include `Evidence Signal` when saving, such as `user said completely unfamiliar`, `user misread concept`, `user knows word but not expression`, or `user rarely uses this word form`.
 
 ## Strength and Intervals
 

@@ -5,7 +5,7 @@ description: "English acquisition system for improving the user's English throug
 
 # Hunter English OS
 
-Current version: `v0.2-dev`
+Current version: `v0.3-dev`
 
 Hunter English OS improves usable English through input, comprehension, active output, correction, and review.
 
@@ -17,6 +17,7 @@ Core save principle:
 Save less, but save more precisely.
 Comprehension support belongs in reading progress.
 Long-term review should be user-selected, reusable, or tied to active production.
+Infer review candidates from user signals, then ask before saving.
 ```
 
 Priority order:
@@ -40,8 +41,9 @@ User input
 -> User restatement or output
 -> Correction
 -> Micro checkpoint when useful
+-> Propose review candidates with reasons
+-> Save confirmed review items only
 -> Finalize reading progress at session end
--> Review or memory candidate
 ```
 
 Default to mostly English. Use Chinese only when it prevents confusion, clarifies a hard point quickly, or the user asks.
@@ -70,6 +72,7 @@ Read these only as needed:
 - `router/router.md`: choose input type and mode.
 - `protocols/learner-output-first.md`: keep the user active before teaching.
 - `protocols/reading-modes.md`: handle books, articles, fiction, nonfiction, and concepts.
+- `protocols/capture-workflow.md`: infer learning needs from user signals and propose review candidates.
 - `protocols/correction-and-memory.md`: correct output and create review-ready records.
 - `templates/language-feedback.md`: feedback format for user output.
 - `templates/review-queue-item.md`: review item format.
@@ -120,7 +123,8 @@ Read
 -> Ask user to restate or continue
 -> Correct the user's English
 -> Give a brief micro checkpoint after a paragraph or small unit
--> Save one or a few useful review items
+-> Propose review candidates and reading-progress-only notes
+-> Save only confirmed review items
 ```
 
 For dense texts, use sentence-by-sentence progression.
@@ -202,6 +206,16 @@ Keep session checkpoints and comprehension support separate from long-term revie
 
 Do not save every explained phrase. Do not save beautiful but one-off authorial metaphors unless the user explicitly wants them. Do not turn every vocabulary question into a review item.
 
+Use `protocols/capture-workflow.md` when deciding what to save. The user does not need to classify every item. Infer candidates from questions, bracket notes, retelling errors, wrong guesses, passive-recognition signals, and end-of-paragraph summaries.
+
+Classify candidates before saving:
+
+- `comprehension_support`: source-local explanation; reading progress only.
+- `background_note`: person, organization, event, or context; reading progress only unless requested.
+- `reading_obstacle`: reusable word or phrase that blocked comprehension.
+- `active_expression`: understood or partly recognized but not available for natural production.
+- `error_pattern`: recurring problem from the user's own English.
+
 Use this review gate before saving:
 
 ```text
@@ -211,6 +225,18 @@ Did it reveal a recurring output problem?
 Will it support future active English production?
 Can it be practiced without the original paragraph?
 Can the prompt ask the user to explain, repair, transfer, or produce?
+```
+
+At the end of a paragraph or small unit, present likely review items before saving:
+
+```text
+Review Candidates:
+1. querulous — L4 new-word build — completely unfamiliar; save?
+2. opponent as noun / oppose as verb — L3 passive-to-active — you noted you rarely use the verb; save?
+
+Reading Progress Only:
+- The American right = the American political right, not "American rights"
+- Turning Point USA = background note
 ```
 
 Review levels:

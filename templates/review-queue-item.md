@@ -14,6 +14,9 @@ L1 one-time check | L2 short-term focus | L3 passive-to-active | L4 new-word bui
 Reason:
 Why this item is being saved.
 
+Evidence Signal:
+user said completely unfamiliar | user misread concept | user knows word but not expression | user rarely uses this word form | user explicitly asked to remember
+
 User Need:
 fixed_expression | uncertain_component | passive_to_active | new_word | recurring_error | user_selected
 
