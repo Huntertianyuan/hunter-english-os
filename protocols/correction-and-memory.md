@@ -90,7 +90,7 @@ Before saving, apply this gate:
 
 If the answer is no, keep it only in a session checkpoint or leave it out.
 
-Before saving, show review candidates with level and reason, then ask for confirmation. Save only confirmed items.
+Do not ask after every question whether to save. Silently buffer candidates during reading. Before saving at wrap-up or user request, show review candidates with level and reason, then ask for confirmation. Save only confirmed items.
 
 ## Session Checkpoints
 
@@ -122,11 +122,22 @@ Ask before saving sensitive or personal material.
 
 Do not use multiple-choice prompts.
 
+Use masked recall by default: do not show the target expression before the user tries.
+
 Use varied active prompts across intervals:
 
-- reading obstacle: explain the phrase, describe the picture, paraphrase in context, then lightly transfer to a new context if useful.
-- active expression: translate a thought into English, complete a frame, respond to a new scenario, then write a free sentence.
+- reading obstacle: context blank, meaning recall, article-context recall, then lightly transfer to a new context if useful.
+- active expression: translate a thought into English, complete a blank, rewrite a sentence, respond to a new scenario, then write a free sentence.
 - error pattern: repair a sentence, transform it into a better pattern, use the pattern in a new context, then produce freely.
+
+If the user cannot answer, give progressive hints:
+
+```text
+Hint 1: word class
+Hint 2: first letter or phrase shape
+Hint 3: meaning/domain
+Answer: target expression
+```
 
 Use this progression when possible:
 
@@ -142,13 +153,15 @@ recognize
 Assign a review level before saving:
 
 - `L1 one-time check`: user understands component words but has not seen the fixed expression. One successful recall may be enough.
-- `L2 short-term focus`: expression or component word is uncertain. Use short-term review until recognition and basic use are stable.
-- `L3 passive-to-active`: user recognizes the word while reading but does not actively produce it. Focus on natural output, not definition.
+- `L2 passive-to-active`: user recognizes the word while reading but does not actively produce it. Focus on natural output, not definition.
+- `L3 short-term focus`: expression or component word is uncertain. Use short-term review until recognition and basic use are stable.
 - `L4 new-word build`: user has not seen the word before. First build recognition and context, then later move toward production.
 
 Use `User Need`, `Review Strategy`, and `Exit Condition` to keep the review queue from becoming a vocabulary pile.
 
 Include `Evidence Signal` when saving, such as `user said completely unfamiliar`, `user misread concept`, `user knows word but not expression`, or `user rarely uses this word form`.
+
+At review completion or when the user stops, list downgrade/archive candidates together. Do not interrupt after each item. One correct answer or a meaning-correct answer with only a minor spelling issue may be eligible for downgrade. Hint-dependent, slow, unnatural, or meaning-wrong answers should not be downgraded.
 
 ## Strength and Intervals
 

@@ -5,7 +5,7 @@ description: "English acquisition system for improving the user's English throug
 
 # Hunter English OS
 
-Current version: `v0.3-dev`
+Current version: `v0.4-dev`
 
 Hunter English OS improves usable English through input, comprehension, active output, correction, and review.
 
@@ -18,6 +18,7 @@ Save less, but save more precisely.
 Comprehension support belongs in reading progress.
 Long-term review should be user-selected, reusable, or tied to active production.
 Infer review candidates from user signals, then ask before saving.
+Wrap-up is user-triggered and creates a retrievable checkpoint.
 ```
 
 Priority order:
@@ -41,9 +42,9 @@ User input
 -> User restatement or output
 -> Correction
 -> Micro checkpoint when useful
--> Propose review candidates with reasons
--> Save confirmed review items only
--> Finalize reading progress at session end
+-> Silently buffer review candidates and background notes
+-> On user-triggered wrap-up, summarize and confirm what to save
+-> On review request, route by wrap-up, source, date, topic, or due items
 ```
 
 Default to mostly English. Use Chinese only when it prevents confusion, clarifies a hard point quickly, or the user asks.
@@ -73,10 +74,14 @@ Read these only as needed:
 - `protocols/learner-output-first.md`: keep the user active before teaching.
 - `protocols/reading-modes.md`: handle books, articles, fiction, nonfiction, and concepts.
 - `protocols/capture-workflow.md`: infer learning needs from user signals and propose review candidates.
+- `protocols/wrap-up-and-retrieval.md`: create wrap-up checkpoints and route future review.
 - `protocols/correction-and-memory.md`: correct output and create review-ready records.
 - `templates/language-feedback.md`: feedback format for user output.
 - `templates/review-queue-item.md`: review item format.
 - `templates/english-profile-item.md`: lightweight profile and error-pattern format.
+- `templates/source-index-item.md`: source index format.
+- `templates/wrap-up-log-item.md`: wrap-up checkpoint format.
+- `templates/background-note.md`: background note format.
 
 ## Input Types
 
@@ -123,8 +128,8 @@ Read
 -> Ask user to restate or continue
 -> Correct the user's English
 -> Give a brief micro checkpoint after a paragraph or small unit
--> Propose review candidates and reading-progress-only notes
--> Save only confirmed review items
+-> Silently buffer review candidates and background notes
+-> Wait for user-triggered wrap-up before proposing saves
 ```
 
 For dense texts, use sentence-by-sentence progression.
@@ -146,7 +151,28 @@ Natural version:
 Is the author intentionally echoing Vance's use of "agreement" from the first paragraph?
 ```
 
-## Reading Progress
+## Wrap-up and Reading Progress
+
+Run a full wrap-up only when the user asks. A wrap-up may happen after 100-200 difficult words, after 500 easier words, at article completion, or at any user-chosen stopping point.
+
+At wrap-up:
+
+- summarize content since the previous wrap-up
+- identify new words, phrases, and error patterns since the previous wrap-up
+- classify review candidates using L1-L4
+- save background notes separately from review items
+- update source index, wrap-up log, review queue, and reading progress as needed
+
+When the user asks for review, route the scope first unless already specified:
+
+```text
+last wrap-up
+last two wrap-ups for this article or book
+specific article or book
+specific date
+topic
+long-unreviewed items
+```
 
 Finalize `reading-progress.md` at the end of a session. During a session, temporary checkpoints may be kept, but the final saved progress must reflect the real stopping point.
 
@@ -190,6 +216,13 @@ Default private memory store:
 
 `/Users/tianyuan/Documents/Codex工作台/工作系统/memory/hunter-english-os/`
 
+Long-term memory files:
+
+- `source-index.md`: articles, books, topics, chat context, wrap-up IDs, and review item IDs.
+- `wrap-up-log.md`: user-triggered checkpoints.
+- `background-notes.md`: cultural, political, organizational, and personal background terms that are saved but not reviewed.
+- `review-queue.md`: active vocabulary, expressions, and error patterns.
+
 Do not save long copyrighted excerpts. Save compact learning records only:
 
 - items that are reusable, recurrent, or tied to the user's real difficulty
@@ -202,6 +235,7 @@ Keep session checkpoints and comprehension support separate from long-term revie
 
 - Session checkpoint: temporary reading continuity; what we read, the local gist, what blocked comprehension, and where to continue.
 - Comprehension support: explanations that helped understand this source locally but do not need long-term practice.
+- Background notes: people, organizations, factions, events, or cultural/political terms; save to `background-notes.md`, not review queue.
 - Review queue: long-term practice; only items that can train future recognition, production, or repair.
 
 Do not save every explained phrase. Do not save beautiful but one-off authorial metaphors unless the user explicitly wants them. Do not turn every vocabulary question into a review item.
@@ -227,12 +261,12 @@ Can it be practiced without the original paragraph?
 Can the prompt ask the user to explain, repair, transfer, or produce?
 ```
 
-At the end of a paragraph or small unit, present likely review items before saving:
+Do not propose review candidates after every question. During reading, silently buffer likely candidates. Present candidates only when the user asks for wrap-up, saving, or review-candidate整理:
 
 ```text
 Review Candidates:
 1. querulous — L4 new-word build — completely unfamiliar; save?
-2. opponent as noun / oppose as verb — L3 passive-to-active — you noted you rarely use the verb; save?
+2. opponent as noun / oppose as verb — L2 passive-to-active — you noted you rarely use the verb; save?
 
 Reading Progress Only:
 - The American right = the American political right, not "American rights"
@@ -242,19 +276,24 @@ Reading Progress Only:
 Review levels:
 
 ```text
-L1 one-time check: user understands component words but has not seen the fixed expression; one successful recall may be enough.
-L2 short-term focus: expression or component word is uncertain; review until recognition and basic use are stable.
-L3 passive-to-active: user recognizes it while reading but does not actively produce it; practice natural output.
-L4 new-word build: user has not seen it before; first build recognition and context, then later move toward production.
+L1 one-time check: understood after explanation; one successful recall may be enough.
+L2 passive-to-active: recognized in reading but not yet available for speaking or writing.
+L3 short-term focus: partly understood or unstable; needs short-term repetition.
+L4 new-word build: completely unfamiliar; build recognition, meaning, tone, and context first.
 ```
 
-Review should test active recall or active use, not passive recognition. Do not use multiple-choice prompts. Prefer tasks like:
+Review should test active recall or active use, not passive recognition. Do not use multiple-choice prompts. Default to masked recall: do not show the target expression before the user tries.
+
+Prefer tasks like:
 
 ```text
-Explain this phrase in simple English.
-Use this frame to express your own idea.
-Rewrite this sentence more naturally.
+Context blank: He tried to ____ the scandal by calling it a joke.
+Meaning recall: What verb means "make something seem less serious"?
+Chinese/user-thought to English: 用英文表达：他试图淡化这个问题。
+Rewrite: He tried to make the problem look not very serious.
 ```
+
+If the user cannot answer, give progressive hints: word class, first letter or phrase shape, meaning/domain, then answer.
 
 Use different prompt variants for the same item across spaced reviews so the user cannot rely on remembering the question. Let review move from recognition to explanation, transfer, and active use.
 

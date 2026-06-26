@@ -2,14 +2,18 @@
 
 ```text
 Date:
+Review Item ID:
+Source ID:
+Wrap-up ID:
 Source:
 Location:
+Topics:
 
 Item Type:
 reading_obstacle | active_expression | error_pattern
 
 Review Level:
-L1 one-time check | L2 short-term focus | L3 passive-to-active | L4 new-word build
+L1 one-time check | L2 passive-to-active | L3 short-term focus | L4 new-word build
 
 Reason:
 Why this item is being saved.
@@ -21,7 +25,7 @@ User Need:
 fixed_expression | uncertain_component | passive_to_active | new_word | recurring_error | user_selected
 
 Review Strategy:
-one-time check | short-term repetition | production practice | recognition first | repair and transfer
+one-time check | production practice | short-term repetition | recognition first | repair and transfer
 
 Exit Condition:
 When this item can be marked stable or archived.
@@ -41,7 +45,7 @@ Prompt Variants:
 4.
 
 Prompt Progression:
-recognize -> explain -> transfer -> actively use / repair
+masked recall -> hint if needed -> explain -> transfer -> actively use / repair
 
 User Original:
 
@@ -64,6 +68,9 @@ Production Strength:
 4 = uses naturally in a new context
 
 Next Review:
+Last Reviewed:
+Review Count:
+Current Level:
 
 Status:
 new | shaky | improving | active
