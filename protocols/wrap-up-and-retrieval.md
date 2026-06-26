@@ -40,7 +40,23 @@ Language Wrap-up:
 Background Notes:
 - people, organizations, political/cultural terms, events, or factions
 - save to background notes, not review queue
+
+Open Discussion Offer:
+- ask whether the user wants to discuss the ideas or related background, or continue reading next time
 ```
+
+Use this closing shape:
+
+```text
+Do you want to discuss the ideas or related background a bit more, or continue reading next time?
+```
+
+During open discussion:
+
+- focus on content understanding, related knowledge, authorial intent, and the user's view
+- correct the user's English and provide more natural phrasing
+- do not automatically save words or phrases
+- save only when the user explicitly asks
 
 ## Review Routing
 
